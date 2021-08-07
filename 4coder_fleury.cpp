@@ -426,6 +426,9 @@ typedef int socklen_t;
 #endif
 #include "4coder_fleury_hooks.h"
 
+//~ NOTE(mole): @mole_src
+#include "4coder_mole_include.cc"
+
 //~ NOTE(rjf): @f4_src
 #include "4coder_fleury_ubiquitous.cpp"
 #include "4coder_fleury_audio.cpp"
@@ -478,6 +481,8 @@ void custom_layer_init(Application_Links *app)
         set_custom_hook(app, HookID_DeltaRule,               F4_DeltaRule);
         set_custom_hook(app, HookID_BufferEditRange,         F4_BufferEditRange);
         set_custom_hook_memory_size(app, HookID_DeltaRule, delta_ctx_size(sizeof(Vec2_f32)));
+
+        mole_set_hooks(app);
     }
     
     // NOTE(rjf): Set up mapping.
