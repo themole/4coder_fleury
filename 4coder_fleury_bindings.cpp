@@ -34,9 +34,9 @@ function Implicit_Map_Result
 F4_ImplicitMap(Application_Links *app, String_ID lang, String_ID mode, Input_Event *event)
 {
     Implicit_Map_Result result = {};
-    
+
     View_ID view = get_this_ctx_view(app, Access_Always);
-    
+
 	Command_Map_ID orig_id = default_get_map_id(app, view);
     Command_Map_ID map_id = orig_id;
 	if(GlobalKeybindingMode == KeyBindingMode_1)
@@ -52,17 +52,17 @@ F4_ImplicitMap(Application_Links *app, String_ID lang, String_ID mode, Input_Eve
 			}
 		}
 	}
-	
+
 	Command_Binding binding = map_get_binding_recursive(&framework_mapping, map_id, event);
 	if(!binding.custom)
 	{
 		binding = map_get_binding_recursive(&framework_mapping, orig_id, event);
 	}
-    
+
     // TODO(allen): map_id <-> map name?
     result.map = 0;
     result.command = binding.custom;
-    
+
     return(result);
 }
 
@@ -75,23 +75,23 @@ F4_SetAbsolutelyNecessaryBindings(Mapping *mapping)
     String_ID global_map_id = vars_save_string_lit("keys_global");
     String_ID file_map_id = vars_save_string_lit("keys_file");
     String_ID code_map_id = vars_save_string_lit("keys_code");
-    
+
 	String_ID global_command_map_id = vars_save_string_lit("keys_global_1");
 	String_ID file_command_map_id = vars_save_string_lit("keys_file_1");
     String_ID code_command_map_id = vars_save_string_lit("keys_code_1");
-    
+
 	implicit_map_function = F4_ImplicitMap;
-	
+
 	MappingScope();
     SelectMapping(mapping);
-    
+
     SelectMap(global_map_id);
     BindCore(mole_startup, CoreCode_Startup);
     BindCore(default_try_exit, CoreCode_TryExit);
     Bind(exit_4coder,          KeyCode_F4, KeyCode_Alt);
     BindMouseWheel(mouse_wheel_scroll);
     BindMouseWheel(mouse_wheel_change_face_size, KeyCode_Control);
-    
+
     SelectMap(file_map_id);
     ParentMap(global_map_id);
     BindTextInput(fleury_write_text_input);
@@ -99,28 +99,28 @@ F4_SetAbsolutelyNecessaryBindings(Mapping *mapping)
     BindMouseRelease(click_set_cursor, MouseCode_Left);
     BindCore(click_set_cursor_and_mark, CoreCode_ClickActivateView);
     BindMouseMove(click_set_cursor_if_lbutton);
-    
+
     SelectMap(code_map_id);
     ParentMap(file_map_id);
     BindTextInput(fleury_write_text_and_auto_indent);
     BindMouse(f4_lego_click_store_token_1, MouseCode_Right);
     BindMouse(f4_lego_click_store_token_2, MouseCode_Middle);
-    
+
     SelectMap(global_command_map_id);
 	ParentMap(global_map_id);
 	GlobalCommandMapReroute[0].From = global_map_id;
 	GlobalCommandMapReroute[0].To = global_command_map_id;
-	
+
     SelectMap(file_command_map_id);
 	ParentMap(global_command_map_id);
 	GlobalCommandMapReroute[1].From = file_map_id;
 	GlobalCommandMapReroute[1].To = file_command_map_id;
-	
+
     SelectMap(code_command_map_id);
 	ParentMap(file_command_map_id);
 	GlobalCommandMapReroute[2].From = code_map_id;
 	GlobalCommandMapReroute[2].To = code_command_map_id;
-    
+
 }
 
 function void
@@ -129,7 +129,7 @@ F4_SetDefaultBindings(Mapping *mapping)
     String_ID global_map_id = vars_save_string_lit("keys_global");
     String_ID file_map_id = vars_save_string_lit("keys_file");
     String_ID code_map_id = vars_save_string_lit("keys_code");
-    
+
     MappingScope();
     SelectMapping(mapping);
     SelectMap(global_map_id);
@@ -173,7 +173,7 @@ F4_SetDefaultBindings(Mapping *mapping)
     Bind(project_fkey_command, KeyCode_F14);
     Bind(project_fkey_command, KeyCode_F15);
     Bind(project_fkey_command, KeyCode_F16);
-    
+
     // NOTE(rjf): Custom bindings.
     {
         Bind(open_panel_vsplit, KeyCode_P, KeyCode_Control);
@@ -185,7 +185,7 @@ F4_SetDefaultBindings(Mapping *mapping)
         Bind(move_right_token_boundary, KeyCode_Right, KeyCode_Shift, KeyCode_Control);
         Bind(move_left_token_boundary, KeyCode_Left, KeyCode_Shift, KeyCode_Control);
     }
-    
+
     SelectMap(file_map_id);
     ParentMap(global_map_id);
     Bind(delete_char,            KeyCode_Delete);
@@ -244,14 +244,14 @@ F4_SetDefaultBindings(Mapping *mapping)
     Bind(if_read_only_goto_position,  KeyCode_Return);
     Bind(if_read_only_goto_position_same_panel, KeyCode_Return, KeyCode_Shift);
     Bind(view_jump_list_with_lister,  KeyCode_Period, KeyCode_Control, KeyCode_Shift);
-    
+
     // NOTE(rjf): Custom bindings.
     {
         Bind(fleury_write_zero_struct,  KeyCode_0, KeyCode_Control);
         Bind(move_right_token_boundary, KeyCode_Right, KeyCode_Shift, KeyCode_Control);
         Bind(move_left_token_boundary, KeyCode_Left, KeyCode_Shift, KeyCode_Control);
     }
-    
+
     SelectMap(code_map_id);
     ParentMap(file_map_id);
     BindTextInput(fleury_write_text_and_auto_indent);
@@ -283,5 +283,5 @@ F4_SetDefaultBindings(Mapping *mapping)
     Bind(if0_off,                    KeyCode_I, KeyCode_Alt);
     Bind(open_file_in_quotes,        KeyCode_1, KeyCode_Alt);
     Bind(open_matching_file_cpp,     KeyCode_2, KeyCode_Alt);
-    
+
 }
